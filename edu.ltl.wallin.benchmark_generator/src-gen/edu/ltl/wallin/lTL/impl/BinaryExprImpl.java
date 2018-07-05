@@ -25,8 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl#getLeft <em>Left</em>}</li>
  *   <li>{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl#getOp <em>Op</em>}</li>
- *   <li>{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl#getLowerBound <em>Lower Bound</em>}</li>
- *   <li>{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl#isEnd <em>End</em>}</li>
  *   <li>{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl#getRight <em>Right</em>}</li>
  * </ul>
  *
@@ -65,44 +64,24 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
   protected String op = OP_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
+   * The default value of the '{@link #isEnd() <em>End</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getLowerBound()
+   * @see #isEnd()
    * @generated
    * @ordered
    */
-  protected static final int LOWER_BOUND_EDEFAULT = 0;
+  protected static final boolean END_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
+   * The cached value of the '{@link #isEnd() <em>End</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getLowerBound()
+   * @see #isEnd()
    * @generated
    * @ordered
    */
-  protected int lowerBound = LOWER_BOUND_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getUpperBound()
-   * @generated
-   * @ordered
-   */
-  protected static final int UPPER_BOUND_EDEFAULT = 0;
-
-  /**
-   * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getUpperBound()
-   * @generated
-   * @ordered
-   */
-  protected int upperBound = UPPER_BOUND_EDEFAULT;
+  protected boolean end = END_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getRight() <em>Right</em>}' containment reference.
@@ -211,9 +190,9 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getLowerBound()
+  public boolean isEnd()
   {
-    return lowerBound;
+    return end;
   }
 
   /**
@@ -221,35 +200,12 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setLowerBound(int newLowerBound)
+  public void setEnd(boolean newEnd)
   {
-    int oldLowerBound = lowerBound;
-    lowerBound = newLowerBound;
+    boolean oldEnd = end;
+    end = newEnd;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LTLPackage.BINARY_EXPR__LOWER_BOUND, oldLowerBound, lowerBound));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public int getUpperBound()
-  {
-    return upperBound;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setUpperBound(int newUpperBound)
-  {
-    int oldUpperBound = upperBound;
-    upperBound = newUpperBound;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LTLPackage.BINARY_EXPR__UPPER_BOUND, oldUpperBound, upperBound));
+      eNotify(new ENotificationImpl(this, Notification.SET, LTLPackage.BINARY_EXPR__END, oldEnd, end));
   }
 
   /**
@@ -332,10 +288,8 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
         return getLeft();
       case LTLPackage.BINARY_EXPR__OP:
         return getOp();
-      case LTLPackage.BINARY_EXPR__LOWER_BOUND:
-        return getLowerBound();
-      case LTLPackage.BINARY_EXPR__UPPER_BOUND:
-        return getUpperBound();
+      case LTLPackage.BINARY_EXPR__END:
+        return isEnd();
       case LTLPackage.BINARY_EXPR__RIGHT:
         return getRight();
     }
@@ -358,11 +312,8 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
       case LTLPackage.BINARY_EXPR__OP:
         setOp((String)newValue);
         return;
-      case LTLPackage.BINARY_EXPR__LOWER_BOUND:
-        setLowerBound((Integer)newValue);
-        return;
-      case LTLPackage.BINARY_EXPR__UPPER_BOUND:
-        setUpperBound((Integer)newValue);
+      case LTLPackage.BINARY_EXPR__END:
+        setEnd((Boolean)newValue);
         return;
       case LTLPackage.BINARY_EXPR__RIGHT:
         setRight((Formula)newValue);
@@ -387,11 +338,8 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
       case LTLPackage.BINARY_EXPR__OP:
         setOp(OP_EDEFAULT);
         return;
-      case LTLPackage.BINARY_EXPR__LOWER_BOUND:
-        setLowerBound(LOWER_BOUND_EDEFAULT);
-        return;
-      case LTLPackage.BINARY_EXPR__UPPER_BOUND:
-        setUpperBound(UPPER_BOUND_EDEFAULT);
+      case LTLPackage.BINARY_EXPR__END:
+        setEnd(END_EDEFAULT);
         return;
       case LTLPackage.BINARY_EXPR__RIGHT:
         setRight((Formula)null);
@@ -414,10 +362,8 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
         return left != null;
       case LTLPackage.BINARY_EXPR__OP:
         return OP_EDEFAULT == null ? op != null : !OP_EDEFAULT.equals(op);
-      case LTLPackage.BINARY_EXPR__LOWER_BOUND:
-        return lowerBound != LOWER_BOUND_EDEFAULT;
-      case LTLPackage.BINARY_EXPR__UPPER_BOUND:
-        return upperBound != UPPER_BOUND_EDEFAULT;
+      case LTLPackage.BINARY_EXPR__END:
+        return end != END_EDEFAULT;
       case LTLPackage.BINARY_EXPR__RIGHT:
         return right != null;
     }
@@ -437,10 +383,8 @@ public class BinaryExprImpl extends FormulaImpl implements BinaryExpr
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (op: ");
     result.append(op);
-    result.append(", lowerBound: ");
-    result.append(lowerBound);
-    result.append(", upperBound: ");
-    result.append(upperBound);
+    result.append(", end: ");
+    result.append(end);
     result.append(')');
     return result.toString();
   }

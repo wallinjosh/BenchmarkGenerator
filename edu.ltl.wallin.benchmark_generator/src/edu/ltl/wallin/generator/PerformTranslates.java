@@ -1,13 +1,11 @@
 package edu.ltl.wallin.generator;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 
 import edu.ltl.wallin.lTL.BinaryExpr;
@@ -18,196 +16,58 @@ import edu.ltl.wallin.lTL.UnaryExpr;
 
 public class PerformTranslates {
 	
-	private final static int NUM_VARS = 5;
-	private final static int NUM_TIME_STEPS = 5;
+	private static int NUM_VARS;
+	private static int NUM_TIME_STEPS;
 	
-	private static void doubleNegation(Formula f) {
-		TreeIterator<EObject> tree = f.eAllContents();
-		EObject cur = f;
-		do {
-			if(cur instanceof UnaryExpr) {
-				UnaryExpr f_cast = (UnaryExpr) cur;
-				if(f_cast.getExpr() instanceof UnaryExpr) {
-					UnaryExpr f_child_cast = (UnaryExpr) f_cast.getExpr();
-					EcoreUtil2.replace(cur, f_child_cast.getExpr());
-				}
-			}
-			cur = (tree.hasNext()) ? tree.next() : null;
-		} while(cur != null);
-	}
-	
-	private static void deMorgans(Formula f) {
-		if(f instanceof IdFormula) return;
+	private static int getUpperBound(Formula f) {
 		if(f instanceof BinaryExpr) {
-			BinaryExpr f_cast = (BinaryExpr) f;
-			deMorgans(f_cast.getLeft());
-			deMorgans(f_cast.getRight());
-		}
-		if(f instanceof UnaryExpr) {
-			UnaryExpr f_cast = (UnaryExpr) f;
-			if(f_cast.getExpr() instanceof BinaryExpr) {
-				BinaryExpr f_child_cast = (BinaryExpr) f_cast.getExpr();
-				String newOp = (f_child_cast.getOp().equals("&")) ? "|" : "&";
-				BinaryExpr newConDis = LTLFactory.eINSTANCE.createBinaryExpr();
-				newConDis.setOp(newOp);
-				UnaryExpr newLeftNeg = LTLFactory.eINSTANCE.createUnaryExpr();
-				newLeftNeg.setOp("-");
-				newLeftNeg.setExpr(f_child_cast.getLeft());
-				UnaryExpr newRightNeg = LTLFactory.eINSTANCE.createUnaryExpr();
-				newRightNeg.setOp("-");
-				newRightNeg.setExpr(f_child_cast.getRight());
-				newConDis.setLeft(newLeftNeg);
-				newConDis.setRight(newRightNeg);
-				EcoreUtil.replace(f, newConDis);
-				deMorgans(newConDis);
+			return ((BinaryExpr)f).getUpperBound();
+		} else if(f instanceof UnaryExpr) {
+			return ((UnaryExpr)f).getUpperBound();
+		} else {
+			EObject cur = f.eContainer();
+			while(cur != null) {
+				if(PerformTransforms.isTemporalNode((Formula) cur)) return getUpperBound((Formula) cur);
+				cur = cur.eContainer();
 			}
-		}
-		
+			return 0;
+		}		
 	}
 	
-	private static void distribute(Formula f) {
-		//Hit a leaf: stop
-		if(f instanceof IdFormula) return;
-		
-		//Negation could lead deeper; recurse lower
-		if(f instanceof UnaryExpr) {
-			UnaryExpr f_cast = (UnaryExpr) f;
-			distribute(f_cast.getExpr());
-		}
-		
-		
+	
+	private static int getLowerBound(Formula f) {
 		if(f instanceof BinaryExpr) {
-			
-			BinaryExpr f_cast = (BinaryExpr) f;
-			
-			if(f_cast.getOp().equals("&")) {
-				//If it's an '&', just recurse to each child
-				distribute(f_cast.getLeft());
-				distribute(f_cast.getRight());
-			}else {
-				//If it's an '|', look at children
-				
-				//If  both children are UnaryExpr or Id, we don't care
-				if(f_cast.getLeft() instanceof BinaryExpr) {
-					BinaryExpr f_child_cast = (BinaryExpr) f_cast.getLeft();
-					if(f_child_cast.getOp().equals("&")) {
-						//fix it
-						BinaryExpr newConjunct = LTLFactory.eINSTANCE.createBinaryExpr();
-						newConjunct.setOp("&");
-						BinaryExpr leftDisjunct = LTLFactory.eINSTANCE.createBinaryExpr();
-						leftDisjunct.setOp("|");
-						BinaryExpr rightDisjunct = LTLFactory.eINSTANCE.createBinaryExpr();
-						rightDisjunct.setOp("|");
-						newConjunct.setLeft(leftDisjunct);
-						newConjunct.setRight(rightDisjunct);
-						
-						leftDisjunct.setLeft(f_child_cast.getLeft());
-						leftDisjunct.setRight(EcoreUtil2.copy(f_cast.getRight()));
-						
-						rightDisjunct.setRight(f_cast.getRight());
-						rightDisjunct.setLeft(EcoreUtil2.copy(f_child_cast.getRight()));
-						
-						EcoreUtil2.replace(f, newConjunct);
-						
-						distribute(newConjunct);
-					}
-				} else if (f_cast.getRight() instanceof BinaryExpr) {
-					BinaryExpr f_child_cast = (BinaryExpr) f_cast.getRight();
-					if(f_child_cast.getOp().equals("&")) {
-						//fix it
-						BinaryExpr newConjunct = LTLFactory.eINSTANCE.createBinaryExpr();
-						newConjunct.setOp("&");
-						BinaryExpr leftDisjunct = LTLFactory.eINSTANCE.createBinaryExpr();
-						leftDisjunct.setOp("|");
-						BinaryExpr rightDisjunct = LTLFactory.eINSTANCE.createBinaryExpr();
-						rightDisjunct.setOp("|");
-						newConjunct.setLeft(leftDisjunct);
-						newConjunct.setRight(rightDisjunct);
-						
-						leftDisjunct.setLeft(f_child_cast.getLeft());
-						leftDisjunct.setRight(EcoreUtil2.copy(f_cast.getRight()));
-						
-						rightDisjunct.setRight(f_cast.getRight());
-						rightDisjunct.setLeft(EcoreUtil2.copy(f_child_cast.getRight()));
-						
-						EcoreUtil2.replace(f, newConjunct);
-						
-						distribute(newConjunct);
-						distribute(f);
-					}
-				}
-
-				
+			return ((BinaryExpr)f).getLowerBound();
+		} else if(f instanceof UnaryExpr) {
+			return ((UnaryExpr)f).getLowerBound();
+		} else {
+			EObject cur = f.eContainer();
+			while(cur != null) {
+				if(PerformTransforms.isTemporalNode((Formula) cur)) return getLowerBound((Formula) cur);
+				cur = cur.eContainer();
 			}
-			
-		}
-		
-	}
-
-	
-	private static void toCNF(Resource r) {
-		Formula root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-		//while(!isCNF(root)) {
-			doubleNegation(root);
-			root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-			PerformTransforms.debugPrettyPrinter(root);
-			deMorgans(root);
-			root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-			PerformTransforms.debugPrettyPrinter(root);
-			distribute(root);
-			root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-			PerformTransforms.debugPrettyPrinter(root);
-		//}
-	}
-	
-	private static boolean isCNFHelper(Formula f) {
-		if(f instanceof UnaryExpr) {
-			UnaryExpr f_cast = (UnaryExpr) f;
-			return f_cast.getExpr() instanceof IdFormula;
-		}else if(f instanceof BinaryExpr) {
-			BinaryExpr f_cast = (BinaryExpr) f;
-			if(f_cast.getOp().equals("|")) {
-				if(f_cast.getLeft() instanceof BinaryExpr) {
-					BinaryExpr f_child_cast = (BinaryExpr) f_cast.getLeft();
-					return f_child_cast.getOp() != "&";
-				}
-				if(f_cast.getRight() instanceof BinaryExpr) {
-					BinaryExpr f_child_cast = (BinaryExpr) f_cast.getRight();
-					return f_child_cast.getOp() != "&";
-				}
-			}
-			return true;
-		}else {
-			return true;
-		}
-	}
-	
-	private static boolean isCNF(Formula f) {
-		TreeIterator<EObject> tree = f.eAllContents();
-		EObject cur;
-		if(!isCNFHelper(f)) return false;
-		while(tree.hasNext()) {
-			cur = tree.next();
-			if(!isCNFHelper((Formula) cur)) return false;
-		}
-		return true;
+			return 0;
+		}		
 	}
 	
 	private static void translateProp(Formula f) {
-		TreeIterator<EObject> allContents = f.eAllContents();
-		EObject cur;
-		
-		while(allContents.hasNext()) {
-			cur = allContents.next();
-			if(cur instanceof BinaryExpr && ((BinaryExpr)cur).getOp() != "&" && ((BinaryExpr)cur).getOp() != "|"){
-
+		TreeIterator<EObject> treeContents = f.eAllContents();
+		Formula cur = f;
+		do{
+			
+			if(cur instanceof IdFormula) {
+				IdFormula curChildCast = (IdFormula) cur;
+				curChildCast.setVarName(curChildCast.getVarName() + Integer.toString(0));
+			}
+			
+			if(PerformTransforms.getOp(cur).equals("U")) {
 				
-			}else if(cur instanceof UnaryExpr && ((UnaryExpr)cur).getOp() != "-") {
+			}else if(PerformTransforms.getOp(cur).equals("F") || PerformTransforms.getOp(cur).equals("G")) {
 				UnaryExpr curCast = (UnaryExpr) cur;
-				int lowerBound = curCast.getLowerBound();
-				int upperBound = curCast.getUpperBound();
+				int lowerBound = getLowerBound(curCast);
+				int upperBound = getUpperBound(curCast);
 				String newOp = (curCast.getOp().equals("G")) ? "&" : "|";
-				List<Formula> newChildren = new ArrayList<>();
+				ArrayList<Formula> newChildren = new ArrayList<>();
 				int i = 0;
 				for(; i <= upperBound - lowerBound; i++) {
 					newChildren.add(EcoreUtil2.copy(curCast.getExpr()));
@@ -223,20 +83,8 @@ public class PerformTranslates {
 				}
 				Formula newParent = LTLFactory.eINSTANCE.createFormula();
 				if(newChildren.size() > 1) {
-					BinaryExpr newChildExpr = LTLFactory.eINSTANCE.createBinaryExpr();
-					BinaryExpr newChildHead = newChildExpr;
-					newChildExpr.setLeft(newChildren.get(0));
-					newChildExpr.setOp(newOp);
-					i = 1;
-					while(i < newChildren.size() - 1) {
-						newChildExpr.setRight(LTLFactory.eINSTANCE.createBinaryExpr());
-						newChildExpr = (BinaryExpr) newChildExpr.getRight();
-						newChildExpr.setOp(newOp);
-						newChildExpr.setLeft(newChildren.get(i));
-						i++;
-					}
-					newChildExpr.setRight(newChildren.get(i));
-					newParent = newChildHead;
+					BinaryExpr newChildExpr = PerformTransforms.composeBinaryExpr(newChildren, newOp);
+					newParent = newChildExpr;
 				}else {
 					UnaryExpr newChildExpr = LTLFactory.eINSTANCE.createUnaryExpr();
 					newChildExpr.setExpr(newChildren.get(0));
@@ -244,8 +92,8 @@ public class PerformTranslates {
 				}
 				EcoreUtil2.replace(cur, newParent);
 			}
-		}
-		
+			cur = treeContents.hasNext() ? (Formula) treeContents.next() : null;
+		}while(cur != null && (cur == f || cur.eContainer() == f));
 	}
 	
 	private static void translateVars(Formula f) {
@@ -256,26 +104,35 @@ public class PerformTranslates {
 			if(cur instanceof IdFormula) {
 				int letter = ((int) ((IdFormula)cur).getVarName().charAt(0)) - ((int) 'a');
 				int time_step = Integer.parseInt(((IdFormula)cur).getVarName().substring(1));
-				System.out.println(letter + "," + time_step);
 				((IdFormula)cur).setVarName(Integer.toString(letter * NUM_TIME_STEPS + time_step + 1));
 			}
 		}
 	}
 	
-	public static void translateFormula(Resource r) {
+	private static int numVars(Formula f) {
+		HashSet<String> vars = new HashSet<String>();
+		TreeIterator<EObject> treeContents = f.eAllContents();
+		EObject cur = f;
+		do {
+			if(cur instanceof IdFormula) vars.add(((IdFormula)cur).getVarName());
+			if(treeContents.hasNext()) cur = treeContents.next();
+			else cur = null;
+		}while(cur != null);
+		return vars.size();
+	}
+	
+	public static void translateFormula(Resource r, int trace_length) {
 		Formula root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-		PerformTransforms.debugPrettyPrinter(root);
+		NUM_VARS = numVars(root);
+		NUM_TIME_STEPS = trace_length;
 		
+		PerformTransforms.debugPrettyPrinter(root);
 		translateProp(root);
 		root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
 		PerformTransforms.debugPrettyPrinter(root);
 		translateVars(root);
 		root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-		toCNF(r);
-		root = (Formula) EcoreUtil2.getRootContainer(r.getContents().get(0));
-		
 		PerformTransforms.debugPrettyPrinter(root);
-		System.out.println(isCNF(root));
 	}
 	
 }

@@ -68,13 +68,31 @@ public interface LTLPackage extends EPackage
   int FORMULA = 0;
 
   /**
+   * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FORMULA__LOWER_BOUND = 0;
+
+  /**
+   * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FORMULA__UPPER_BOUND = 1;
+
+  /**
    * The number of structural features of the '<em>Formula</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FORMULA_FEATURE_COUNT = 0;
+  int FORMULA_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl <em>Binary Expr</em>}' class.
@@ -85,6 +103,24 @@ public interface LTLPackage extends EPackage
    * @generated
    */
   int BINARY_EXPR = 1;
+
+  /**
+   * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BINARY_EXPR__LOWER_BOUND = FORMULA__LOWER_BOUND;
+
+  /**
+   * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BINARY_EXPR__UPPER_BOUND = FORMULA__UPPER_BOUND;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -105,22 +141,13 @@ public interface LTLPackage extends EPackage
   int BINARY_EXPR__OP = FORMULA_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+   * The feature id for the '<em><b>End</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BINARY_EXPR__LOWER_BOUND = FORMULA_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BINARY_EXPR__UPPER_BOUND = FORMULA_FEATURE_COUNT + 3;
+  int BINARY_EXPR__END = FORMULA_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Right</b></em>' containment reference.
@@ -129,7 +156,7 @@ public interface LTLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BINARY_EXPR__RIGHT = FORMULA_FEATURE_COUNT + 4;
+  int BINARY_EXPR__RIGHT = FORMULA_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Binary Expr</em>' class.
@@ -138,7 +165,7 @@ public interface LTLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BINARY_EXPR_FEATURE_COUNT = FORMULA_FEATURE_COUNT + 5;
+  int BINARY_EXPR_FEATURE_COUNT = FORMULA_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link edu.ltl.wallin.lTL.impl.UnaryExprImpl <em>Unary Expr</em>}' class.
@@ -151,6 +178,24 @@ public interface LTLPackage extends EPackage
   int UNARY_EXPR = 2;
 
   /**
+   * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNARY_EXPR__LOWER_BOUND = FORMULA__LOWER_BOUND;
+
+  /**
+   * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNARY_EXPR__UPPER_BOUND = FORMULA__UPPER_BOUND;
+
+  /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -160,22 +205,13 @@ public interface LTLPackage extends EPackage
   int UNARY_EXPR__OP = FORMULA_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+   * The feature id for the '<em><b>End</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int UNARY_EXPR__LOWER_BOUND = FORMULA_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int UNARY_EXPR__UPPER_BOUND = FORMULA_FEATURE_COUNT + 2;
+  int UNARY_EXPR__END = FORMULA_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Expr</b></em>' containment reference.
@@ -184,7 +220,7 @@ public interface LTLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int UNARY_EXPR__EXPR = FORMULA_FEATURE_COUNT + 3;
+  int UNARY_EXPR__EXPR = FORMULA_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Unary Expr</em>' class.
@@ -193,7 +229,7 @@ public interface LTLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int UNARY_EXPR_FEATURE_COUNT = FORMULA_FEATURE_COUNT + 4;
+  int UNARY_EXPR_FEATURE_COUNT = FORMULA_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link edu.ltl.wallin.lTL.impl.IdFormulaImpl <em>Id Formula</em>}' class.
@@ -204,6 +240,24 @@ public interface LTLPackage extends EPackage
    * @generated
    */
   int ID_FORMULA = 3;
+
+  /**
+   * The feature id for the '<em><b>Lower Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ID_FORMULA__LOWER_BOUND = FORMULA__LOWER_BOUND;
+
+  /**
+   * The feature id for the '<em><b>Upper Bound</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ID_FORMULA__UPPER_BOUND = FORMULA__UPPER_BOUND;
 
   /**
    * The feature id for the '<em><b>Var Name</b></em>' attribute.
@@ -233,6 +287,28 @@ public interface LTLPackage extends EPackage
    * @generated
    */
   EClass getFormula();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.Formula#getLowerBound <em>Lower Bound</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Lower Bound</em>'.
+   * @see edu.ltl.wallin.lTL.Formula#getLowerBound()
+   * @see #getFormula()
+   * @generated
+   */
+  EAttribute getFormula_LowerBound();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.Formula#getUpperBound <em>Upper Bound</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Upper Bound</em>'.
+   * @see edu.ltl.wallin.lTL.Formula#getUpperBound()
+   * @see #getFormula()
+   * @generated
+   */
+  EAttribute getFormula_UpperBound();
 
   /**
    * Returns the meta object for class '{@link edu.ltl.wallin.lTL.BinaryExpr <em>Binary Expr</em>}'.
@@ -267,26 +343,15 @@ public interface LTLPackage extends EPackage
   EAttribute getBinaryExpr_Op();
 
   /**
-   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.BinaryExpr#getLowerBound <em>Lower Bound</em>}'.
+   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.BinaryExpr#isEnd <em>End</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Lower Bound</em>'.
-   * @see edu.ltl.wallin.lTL.BinaryExpr#getLowerBound()
+   * @return the meta object for the attribute '<em>End</em>'.
+   * @see edu.ltl.wallin.lTL.BinaryExpr#isEnd()
    * @see #getBinaryExpr()
    * @generated
    */
-  EAttribute getBinaryExpr_LowerBound();
-
-  /**
-   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.BinaryExpr#getUpperBound <em>Upper Bound</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Upper Bound</em>'.
-   * @see edu.ltl.wallin.lTL.BinaryExpr#getUpperBound()
-   * @see #getBinaryExpr()
-   * @generated
-   */
-  EAttribute getBinaryExpr_UpperBound();
+  EAttribute getBinaryExpr_End();
 
   /**
    * Returns the meta object for the containment reference '{@link edu.ltl.wallin.lTL.BinaryExpr#getRight <em>Right</em>}'.
@@ -321,26 +386,15 @@ public interface LTLPackage extends EPackage
   EAttribute getUnaryExpr_Op();
 
   /**
-   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.UnaryExpr#getLowerBound <em>Lower Bound</em>}'.
+   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.UnaryExpr#isEnd <em>End</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Lower Bound</em>'.
-   * @see edu.ltl.wallin.lTL.UnaryExpr#getLowerBound()
+   * @return the meta object for the attribute '<em>End</em>'.
+   * @see edu.ltl.wallin.lTL.UnaryExpr#isEnd()
    * @see #getUnaryExpr()
    * @generated
    */
-  EAttribute getUnaryExpr_LowerBound();
-
-  /**
-   * Returns the meta object for the attribute '{@link edu.ltl.wallin.lTL.UnaryExpr#getUpperBound <em>Upper Bound</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Upper Bound</em>'.
-   * @see edu.ltl.wallin.lTL.UnaryExpr#getUpperBound()
-   * @see #getUnaryExpr()
-   * @generated
-   */
-  EAttribute getUnaryExpr_UpperBound();
+  EAttribute getUnaryExpr_End();
 
   /**
    * Returns the meta object for the containment reference '{@link edu.ltl.wallin.lTL.UnaryExpr#getExpr <em>Expr</em>}'.
@@ -408,6 +462,22 @@ public interface LTLPackage extends EPackage
     EClass FORMULA = eINSTANCE.getFormula();
 
     /**
+     * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FORMULA__LOWER_BOUND = eINSTANCE.getFormula_LowerBound();
+
+    /**
+     * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FORMULA__UPPER_BOUND = eINSTANCE.getFormula_UpperBound();
+
+    /**
      * The meta object literal for the '{@link edu.ltl.wallin.lTL.impl.BinaryExprImpl <em>Binary Expr</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -434,20 +504,12 @@ public interface LTLPackage extends EPackage
     EAttribute BINARY_EXPR__OP = eINSTANCE.getBinaryExpr_Op();
 
     /**
-     * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>End</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute BINARY_EXPR__LOWER_BOUND = eINSTANCE.getBinaryExpr_LowerBound();
-
-    /**
-     * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute BINARY_EXPR__UPPER_BOUND = eINSTANCE.getBinaryExpr_UpperBound();
+    EAttribute BINARY_EXPR__END = eINSTANCE.getBinaryExpr_End();
 
     /**
      * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
@@ -476,20 +538,12 @@ public interface LTLPackage extends EPackage
     EAttribute UNARY_EXPR__OP = eINSTANCE.getUnaryExpr_Op();
 
     /**
-     * The meta object literal for the '<em><b>Lower Bound</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>End</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute UNARY_EXPR__LOWER_BOUND = eINSTANCE.getUnaryExpr_LowerBound();
-
-    /**
-     * The meta object literal for the '<em><b>Upper Bound</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute UNARY_EXPR__UPPER_BOUND = eINSTANCE.getUnaryExpr_UpperBound();
+    EAttribute UNARY_EXPR__END = eINSTANCE.getUnaryExpr_End();
 
     /**
      * The meta object literal for the '<em><b>Expr</b></em>' containment reference feature.

@@ -48,31 +48,33 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cLowerBoundAssignment_1_0_0_3 = (Assignment)cGroup_1_0_0.eContents().get(3);
 		private final RuleCall cLowerBoundINTTerminalRuleCall_1_0_0_3_0 = (RuleCall)cLowerBoundAssignment_1_0_0_3.eContents().get(0);
 		private final Keyword cCommaKeyword_1_0_0_4 = (Keyword)cGroup_1_0_0.eContents().get(4);
-		private final Assignment cUpperBoundAssignment_1_0_0_5 = (Assignment)cGroup_1_0_0.eContents().get(5);
-		private final RuleCall cUpperBoundINTTerminalRuleCall_1_0_0_5_0 = (RuleCall)cUpperBoundAssignment_1_0_0_5.eContents().get(0);
-		private final Keyword cRightSquareBracketKeyword_1_0_0_6 = (Keyword)cGroup_1_0_0.eContents().get(6);
+		private final Assignment cEndAssignment_1_0_0_5 = (Assignment)cGroup_1_0_0.eContents().get(5);
+		private final Keyword cEndEndKeyword_1_0_0_5_0 = (Keyword)cEndAssignment_1_0_0_5.eContents().get(0);
+		private final Assignment cUpperBoundAssignment_1_0_0_6 = (Assignment)cGroup_1_0_0.eContents().get(6);
+		private final RuleCall cUpperBoundINTTerminalRuleCall_1_0_0_6_0 = (RuleCall)cUpperBoundAssignment_1_0_0_6.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_1_0_0_7 = (Keyword)cGroup_1_0_0.eContents().get(7);
 		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cRightConnectiveFormulaParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
 		
 		//UntilFormula Formula:
-		//	ConnectiveFormula (=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']')
+		//	ConnectiveFormula (=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']')
 		//	right=ConnectiveFormula)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ConnectiveFormula (=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']')
+		//ConnectiveFormula (=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']')
 		//right=ConnectiveFormula)*
 		public Group getGroup() { return cGroup; }
 		
 		//ConnectiveFormula
 		public RuleCall getConnectiveFormulaParserRuleCall_0() { return cConnectiveFormulaParserRuleCall_0; }
 		
-		//(=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']') right=ConnectiveFormula)*
+		//(=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']') right=ConnectiveFormula)*
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']')
+		//=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']')
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
-		//{BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']'
+		//{BinaryExpr.left=current} op='U' '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']'
 		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
 		
 		//{BinaryExpr.left=current}
@@ -87,7 +89,7 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		//'['
 		public Keyword getLeftSquareBracketKeyword_1_0_0_2() { return cLeftSquareBracketKeyword_1_0_0_2; }
 		
-		//lowerBound=INT
+		//lowerBound=INT?
 		public Assignment getLowerBoundAssignment_1_0_0_3() { return cLowerBoundAssignment_1_0_0_3; }
 		
 		//INT
@@ -96,14 +98,20 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		//','
 		public Keyword getCommaKeyword_1_0_0_4() { return cCommaKeyword_1_0_0_4; }
 		
-		//upperBound=INT
-		public Assignment getUpperBoundAssignment_1_0_0_5() { return cUpperBoundAssignment_1_0_0_5; }
+		//end?='end'?
+		public Assignment getEndAssignment_1_0_0_5() { return cEndAssignment_1_0_0_5; }
+		
+		//'end'
+		public Keyword getEndEndKeyword_1_0_0_5_0() { return cEndEndKeyword_1_0_0_5_0; }
+		
+		//upperBound=INT?
+		public Assignment getUpperBoundAssignment_1_0_0_6() { return cUpperBoundAssignment_1_0_0_6; }
 		
 		//INT
-		public RuleCall getUpperBoundINTTerminalRuleCall_1_0_0_5_0() { return cUpperBoundINTTerminalRuleCall_1_0_0_5_0; }
+		public RuleCall getUpperBoundINTTerminalRuleCall_1_0_0_6_0() { return cUpperBoundINTTerminalRuleCall_1_0_0_6_0; }
 		
 		//']'
-		public Keyword getRightSquareBracketKeyword_1_0_0_6() { return cRightSquareBracketKeyword_1_0_0_6; }
+		public Keyword getRightSquareBracketKeyword_1_0_0_7() { return cRightSquareBracketKeyword_1_0_0_7; }
 		
 		//right=ConnectiveFormula
 		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
@@ -179,11 +187,13 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cLowerBoundAssignment_0_3 = (Assignment)cGroup_0.eContents().get(3);
 		private final RuleCall cLowerBoundINTTerminalRuleCall_0_3_0 = (RuleCall)cLowerBoundAssignment_0_3.eContents().get(0);
 		private final Keyword cCommaKeyword_0_4 = (Keyword)cGroup_0.eContents().get(4);
-		private final Assignment cUpperBoundAssignment_0_5 = (Assignment)cGroup_0.eContents().get(5);
-		private final RuleCall cUpperBoundINTTerminalRuleCall_0_5_0 = (RuleCall)cUpperBoundAssignment_0_5.eContents().get(0);
-		private final Keyword cRightSquareBracketKeyword_0_6 = (Keyword)cGroup_0.eContents().get(6);
-		private final Assignment cExprAssignment_0_7 = (Assignment)cGroup_0.eContents().get(7);
-		private final RuleCall cExprUnaryExprParserRuleCall_0_7_0 = (RuleCall)cExprAssignment_0_7.eContents().get(0);
+		private final Assignment cEndAssignment_0_5 = (Assignment)cGroup_0.eContents().get(5);
+		private final Keyword cEndEndKeyword_0_5_0 = (Keyword)cEndAssignment_0_5.eContents().get(0);
+		private final Assignment cUpperBoundAssignment_0_6 = (Assignment)cGroup_0.eContents().get(6);
+		private final RuleCall cUpperBoundINTTerminalRuleCall_0_6_0 = (RuleCall)cUpperBoundAssignment_0_6.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_0_7 = (Keyword)cGroup_0.eContents().get(7);
+		private final Assignment cExprAssignment_0_8 = (Assignment)cGroup_0.eContents().get(8);
+		private final RuleCall cExprUnaryExprParserRuleCall_0_8_0 = (RuleCall)cExprAssignment_0_8.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Action cUnaryExprAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Assignment cOpAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
@@ -193,16 +203,16 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cLiteralParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//UnaryExpr Formula:
-		//	{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT ',' upperBound=INT ']' expr=UnaryExpr
+		//	{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']' expr=UnaryExpr
 		//	| {UnaryExpr} op='-' expr=UnaryExpr
 		//	| Literal;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT ',' upperBound=INT ']' expr=UnaryExpr | {UnaryExpr} op='-' expr=UnaryExpr
-		//| Literal
+		//{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']' expr=UnaryExpr | {UnaryExpr} op='-'
+		//expr=UnaryExpr | Literal
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT ',' upperBound=INT ']' expr=UnaryExpr
+		//{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']' expr=UnaryExpr
 		public Group getGroup_0() { return cGroup_0; }
 		
 		//{UnaryExpr}
@@ -223,7 +233,7 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		//'['
 		public Keyword getLeftSquareBracketKeyword_0_2() { return cLeftSquareBracketKeyword_0_2; }
 		
-		//lowerBound=INT
+		//lowerBound=INT?
 		public Assignment getLowerBoundAssignment_0_3() { return cLowerBoundAssignment_0_3; }
 		
 		//INT
@@ -232,20 +242,26 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		//','
 		public Keyword getCommaKeyword_0_4() { return cCommaKeyword_0_4; }
 		
-		//upperBound=INT
-		public Assignment getUpperBoundAssignment_0_5() { return cUpperBoundAssignment_0_5; }
+		//end?='end'?
+		public Assignment getEndAssignment_0_5() { return cEndAssignment_0_5; }
+		
+		//'end'
+		public Keyword getEndEndKeyword_0_5_0() { return cEndEndKeyword_0_5_0; }
+		
+		//upperBound=INT?
+		public Assignment getUpperBoundAssignment_0_6() { return cUpperBoundAssignment_0_6; }
 		
 		//INT
-		public RuleCall getUpperBoundINTTerminalRuleCall_0_5_0() { return cUpperBoundINTTerminalRuleCall_0_5_0; }
+		public RuleCall getUpperBoundINTTerminalRuleCall_0_6_0() { return cUpperBoundINTTerminalRuleCall_0_6_0; }
 		
 		//']'
-		public Keyword getRightSquareBracketKeyword_0_6() { return cRightSquareBracketKeyword_0_6; }
+		public Keyword getRightSquareBracketKeyword_0_7() { return cRightSquareBracketKeyword_0_7; }
 		
 		//expr=UnaryExpr
-		public Assignment getExprAssignment_0_7() { return cExprAssignment_0_7; }
+		public Assignment getExprAssignment_0_8() { return cExprAssignment_0_8; }
 		
 		//UnaryExpr
-		public RuleCall getExprUnaryExprParserRuleCall_0_7_0() { return cExprUnaryExprParserRuleCall_0_7_0; }
+		public RuleCall getExprUnaryExprParserRuleCall_0_8_0() { return cExprUnaryExprParserRuleCall_0_8_0; }
 		
 		//{UnaryExpr} op='-' expr=UnaryExpr
 		public Group getGroup_1() { return cGroup_1; }
@@ -275,20 +291,28 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cIdFormulaAction_0_0 = (Action)cGroup_0.eContents().get(0);
 		private final Assignment cVarNameAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
 		private final RuleCall cVarNameVAR_NAMETerminalRuleCall_0_1_0 = (RuleCall)cVarNameAssignment_0_1.eContents().get(0);
+		private final Group cGroup_0_2 = (Group)cGroup_0.eContents().get(2);
+		private final Keyword cLowerKeyword_0_2_0 = (Keyword)cGroup_0_2.eContents().get(0);
+		private final Assignment cLowerBoundAssignment_0_2_1 = (Assignment)cGroup_0_2.eContents().get(1);
+		private final RuleCall cLowerBoundINTTerminalRuleCall_0_2_1_0 = (RuleCall)cLowerBoundAssignment_0_2_1.eContents().get(0);
+		private final Group cGroup_0_3 = (Group)cGroup_0.eContents().get(3);
+		private final Keyword cUpperKeyword_0_3_0 = (Keyword)cGroup_0_3.eContents().get(0);
+		private final Assignment cUpperBoundAssignment_0_3_1 = (Assignment)cGroup_0_3.eContents().get(1);
+		private final RuleCall cUpperBoundINTTerminalRuleCall_0_3_1_0 = (RuleCall)cUpperBoundAssignment_0_3_1.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final RuleCall cFormulaParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		private final Keyword cRightParenthesisKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//Literal Formula:
-		//	{IdFormula} varName=VAR_NAME
+		//	{IdFormula} varName=VAR_NAME ('lower=' lowerBound=INT)? ('upper=' upperBound=INT)?
 		//	| '(' Formula ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{IdFormula} varName=VAR_NAME | '(' Formula ')'
+		//{IdFormula} varName=VAR_NAME ('lower=' lowerBound=INT)? ('upper=' upperBound=INT)? | '(' Formula ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//{IdFormula} varName=VAR_NAME
+		//{IdFormula} varName=VAR_NAME ('lower=' lowerBound=INT)? ('upper=' upperBound=INT)?
 		public Group getGroup_0() { return cGroup_0; }
 		
 		//{IdFormula}
@@ -299,6 +323,30 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//VAR_NAME
 		public RuleCall getVarNameVAR_NAMETerminalRuleCall_0_1_0() { return cVarNameVAR_NAMETerminalRuleCall_0_1_0; }
+		
+		//('lower=' lowerBound=INT)?
+		public Group getGroup_0_2() { return cGroup_0_2; }
+		
+		//'lower='
+		public Keyword getLowerKeyword_0_2_0() { return cLowerKeyword_0_2_0; }
+		
+		//lowerBound=INT
+		public Assignment getLowerBoundAssignment_0_2_1() { return cLowerBoundAssignment_0_2_1; }
+		
+		//INT
+		public RuleCall getLowerBoundINTTerminalRuleCall_0_2_1_0() { return cLowerBoundINTTerminalRuleCall_0_2_1_0; }
+		
+		//('upper=' upperBound=INT)?
+		public Group getGroup_0_3() { return cGroup_0_3; }
+		
+		//'upper='
+		public Keyword getUpperKeyword_0_3_0() { return cUpperKeyword_0_3_0; }
+		
+		//upperBound=INT
+		public Assignment getUpperBoundAssignment_0_3_1() { return cUpperBoundAssignment_0_3_1; }
+		
+		//INT
+		public RuleCall getUpperBoundINTTerminalRuleCall_0_3_1_0() { return cUpperBoundINTTerminalRuleCall_0_3_1_0; }
 		
 		//'(' Formula ')'
 		public Group getGroup_1() { return cGroup_1; }
@@ -376,7 +424,7 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//UntilFormula Formula:
-	//	ConnectiveFormula (=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']')
+	//	ConnectiveFormula (=> ({BinaryExpr.left=current} op='U' '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']')
 	//	right=ConnectiveFormula)*;
 	public UntilFormulaElements getUntilFormulaAccess() {
 		return pUntilFormula;
@@ -397,7 +445,7 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//UnaryExpr Formula:
-	//	{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT ',' upperBound=INT ']' expr=UnaryExpr
+	//	{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT? ',' end?='end'? upperBound=INT? ']' expr=UnaryExpr
 	//	| {UnaryExpr} op='-' expr=UnaryExpr
 	//	| Literal;
 	public UnaryExprElements getUnaryExprAccess() {
@@ -409,7 +457,7 @@ public class LTLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Literal Formula:
-	//	{IdFormula} varName=VAR_NAME
+	//	{IdFormula} varName=VAR_NAME ('lower=' lowerBound=INT)? ('upper=' upperBound=INT)?
 	//	| '(' Formula ')';
 	public LiteralElements getLiteralAccess() {
 		return pLiteral;

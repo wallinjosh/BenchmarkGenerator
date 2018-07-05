@@ -46,20 +46,26 @@ public class LTLParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getUnaryExprAccess().getGroup_0(), "rule__UnaryExpr__Group_0__0");
 			builder.put(grammarAccess.getUnaryExprAccess().getGroup_1(), "rule__UnaryExpr__Group_1__0");
 			builder.put(grammarAccess.getLiteralAccess().getGroup_0(), "rule__Literal__Group_0__0");
+			builder.put(grammarAccess.getLiteralAccess().getGroup_0_2(), "rule__Literal__Group_0_2__0");
+			builder.put(grammarAccess.getLiteralAccess().getGroup_0_3(), "rule__Literal__Group_0_3__0");
 			builder.put(grammarAccess.getLiteralAccess().getGroup_1(), "rule__Literal__Group_1__0");
 			builder.put(grammarAccess.getUntilFormulaAccess().getOpAssignment_1_0_0_1(), "rule__UntilFormula__OpAssignment_1_0_0_1");
 			builder.put(grammarAccess.getUntilFormulaAccess().getLowerBoundAssignment_1_0_0_3(), "rule__UntilFormula__LowerBoundAssignment_1_0_0_3");
-			builder.put(grammarAccess.getUntilFormulaAccess().getUpperBoundAssignment_1_0_0_5(), "rule__UntilFormula__UpperBoundAssignment_1_0_0_5");
+			builder.put(grammarAccess.getUntilFormulaAccess().getEndAssignment_1_0_0_5(), "rule__UntilFormula__EndAssignment_1_0_0_5");
+			builder.put(grammarAccess.getUntilFormulaAccess().getUpperBoundAssignment_1_0_0_6(), "rule__UntilFormula__UpperBoundAssignment_1_0_0_6");
 			builder.put(grammarAccess.getUntilFormulaAccess().getRightAssignment_1_1(), "rule__UntilFormula__RightAssignment_1_1");
 			builder.put(grammarAccess.getConnectiveFormulaAccess().getOpAssignment_1_0_0_1(), "rule__ConnectiveFormula__OpAssignment_1_0_0_1");
 			builder.put(grammarAccess.getConnectiveFormulaAccess().getRightAssignment_1_1(), "rule__ConnectiveFormula__RightAssignment_1_1");
 			builder.put(grammarAccess.getUnaryExprAccess().getOpAssignment_0_1(), "rule__UnaryExpr__OpAssignment_0_1");
 			builder.put(grammarAccess.getUnaryExprAccess().getLowerBoundAssignment_0_3(), "rule__UnaryExpr__LowerBoundAssignment_0_3");
-			builder.put(grammarAccess.getUnaryExprAccess().getUpperBoundAssignment_0_5(), "rule__UnaryExpr__UpperBoundAssignment_0_5");
-			builder.put(grammarAccess.getUnaryExprAccess().getExprAssignment_0_7(), "rule__UnaryExpr__ExprAssignment_0_7");
+			builder.put(grammarAccess.getUnaryExprAccess().getEndAssignment_0_5(), "rule__UnaryExpr__EndAssignment_0_5");
+			builder.put(grammarAccess.getUnaryExprAccess().getUpperBoundAssignment_0_6(), "rule__UnaryExpr__UpperBoundAssignment_0_6");
+			builder.put(grammarAccess.getUnaryExprAccess().getExprAssignment_0_8(), "rule__UnaryExpr__ExprAssignment_0_8");
 			builder.put(grammarAccess.getUnaryExprAccess().getOpAssignment_1_1(), "rule__UnaryExpr__OpAssignment_1_1");
 			builder.put(grammarAccess.getUnaryExprAccess().getExprAssignment_1_2(), "rule__UnaryExpr__ExprAssignment_1_2");
 			builder.put(grammarAccess.getLiteralAccess().getVarNameAssignment_0_1(), "rule__Literal__VarNameAssignment_0_1");
+			builder.put(grammarAccess.getLiteralAccess().getLowerBoundAssignment_0_2_1(), "rule__Literal__LowerBoundAssignment_0_2_1");
+			builder.put(grammarAccess.getLiteralAccess().getUpperBoundAssignment_0_3_1(), "rule__Literal__UpperBoundAssignment_0_3_1");
 		}
 	}
 	

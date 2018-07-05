@@ -124,13 +124,18 @@ ruleUntilFormula returns [EObject current=null]
 						(
 							RULE_INT
 						)
-					)
+					)?
 					','
+					(
+						(
+							'end'
+						)
+					)?
 					(
 						(
 							RULE_INT
 						)
-					)
+					)?
 					']'
 				)
 				)=>
@@ -177,16 +182,30 @@ ruleUntilFormula returns [EObject current=null]
 									"org.eclipse.xtext.common.Terminals.INT");
 							}
 						)
-					)
+					)?
 					otherlv_5=','
 					{
 						newLeafNode(otherlv_5, grammarAccess.getUntilFormulaAccess().getCommaKeyword_1_0_0_4());
 					}
 					(
 						(
-							lv_upperBound_6_0=RULE_INT
+							lv_end_6_0='end'
 							{
-								newLeafNode(lv_upperBound_6_0, grammarAccess.getUntilFormulaAccess().getUpperBoundINTTerminalRuleCall_1_0_0_5_0());
+								newLeafNode(lv_end_6_0, grammarAccess.getUntilFormulaAccess().getEndEndKeyword_1_0_0_5_0());
+							}
+							{
+								if ($current==null) {
+									$current = createModelElement(grammarAccess.getUntilFormulaRule());
+								}
+								setWithLastConsumed($current, "end", true, "end");
+							}
+						)
+					)?
+					(
+						(
+							lv_upperBound_7_0=RULE_INT
+							{
+								newLeafNode(lv_upperBound_7_0, grammarAccess.getUntilFormulaAccess().getUpperBoundINTTerminalRuleCall_1_0_0_6_0());
 							}
 							{
 								if ($current==null) {
@@ -195,14 +214,14 @@ ruleUntilFormula returns [EObject current=null]
 								setWithLastConsumed(
 									$current,
 									"upperBound",
-									lv_upperBound_6_0,
+									lv_upperBound_7_0,
 									"org.eclipse.xtext.common.Terminals.INT");
 							}
 						)
-					)
-					otherlv_7=']'
+					)?
+					otherlv_8=']'
 					{
-						newLeafNode(otherlv_7, grammarAccess.getUntilFormulaAccess().getRightSquareBracketKeyword_1_0_0_6());
+						newLeafNode(otherlv_8, grammarAccess.getUntilFormulaAccess().getRightSquareBracketKeyword_1_0_0_7());
 					}
 				)
 			)
@@ -211,7 +230,7 @@ ruleUntilFormula returns [EObject current=null]
 					{
 						newCompositeNode(grammarAccess.getUntilFormulaAccess().getRightConnectiveFormulaParserRuleCall_1_1_0());
 					}
-					lv_right_8_0=ruleConnectiveFormula
+					lv_right_9_0=ruleConnectiveFormula
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getUntilFormulaRule());
@@ -219,7 +238,7 @@ ruleUntilFormula returns [EObject current=null]
 						set(
 							$current,
 							"right",
-							lv_right_8_0,
+							lv_right_9_0,
 							"edu.ltl.wallin.LTL.ConnectiveFormula");
 						afterParserOrEnumRuleCall();
 					}
@@ -401,16 +420,30 @@ ruleUnaryExpr returns [EObject current=null]
 							"org.eclipse.xtext.common.Terminals.INT");
 					}
 				)
-			)
+			)?
 			otherlv_4=','
 			{
 				newLeafNode(otherlv_4, grammarAccess.getUnaryExprAccess().getCommaKeyword_0_4());
 			}
 			(
 				(
-					lv_upperBound_5_0=RULE_INT
+					lv_end_5_0='end'
 					{
-						newLeafNode(lv_upperBound_5_0, grammarAccess.getUnaryExprAccess().getUpperBoundINTTerminalRuleCall_0_5_0());
+						newLeafNode(lv_end_5_0, grammarAccess.getUnaryExprAccess().getEndEndKeyword_0_5_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getUnaryExprRule());
+						}
+						setWithLastConsumed($current, "end", true, "end");
+					}
+				)
+			)?
+			(
+				(
+					lv_upperBound_6_0=RULE_INT
+					{
+						newLeafNode(lv_upperBound_6_0, grammarAccess.getUnaryExprAccess().getUpperBoundINTTerminalRuleCall_0_6_0());
 					}
 					{
 						if ($current==null) {
@@ -419,21 +452,21 @@ ruleUnaryExpr returns [EObject current=null]
 						setWithLastConsumed(
 							$current,
 							"upperBound",
-							lv_upperBound_5_0,
+							lv_upperBound_6_0,
 							"org.eclipse.xtext.common.Terminals.INT");
 					}
 				)
-			)
-			otherlv_6=']'
+			)?
+			otherlv_7=']'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getUnaryExprAccess().getRightSquareBracketKeyword_0_6());
+				newLeafNode(otherlv_7, grammarAccess.getUnaryExprAccess().getRightSquareBracketKeyword_0_7());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getUnaryExprAccess().getExprUnaryExprParserRuleCall_0_7_0());
+						newCompositeNode(grammarAccess.getUnaryExprAccess().getExprUnaryExprParserRuleCall_0_8_0());
 					}
-					lv_expr_7_0=ruleUnaryExpr
+					lv_expr_8_0=ruleUnaryExpr
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getUnaryExprRule());
@@ -441,7 +474,7 @@ ruleUnaryExpr returns [EObject current=null]
 						set(
 							$current,
 							"expr",
-							lv_expr_7_0,
+							lv_expr_8_0,
 							"edu.ltl.wallin.LTL.UnaryExpr");
 						afterParserOrEnumRuleCall();
 					}
@@ -459,15 +492,15 @@ ruleUnaryExpr returns [EObject current=null]
 			)
 			(
 				(
-					lv_op_9_0='-'
+					lv_op_10_0='-'
 					{
-						newLeafNode(lv_op_9_0, grammarAccess.getUnaryExprAccess().getOpHyphenMinusKeyword_1_1_0());
+						newLeafNode(lv_op_10_0, grammarAccess.getUnaryExprAccess().getOpHyphenMinusKeyword_1_1_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getUnaryExprRule());
 						}
-						setWithLastConsumed($current, "op", lv_op_9_0, "-");
+						setWithLastConsumed($current, "op", lv_op_10_0, "-");
 					}
 				)
 			)
@@ -476,7 +509,7 @@ ruleUnaryExpr returns [EObject current=null]
 					{
 						newCompositeNode(grammarAccess.getUnaryExprAccess().getExprUnaryExprParserRuleCall_1_2_0());
 					}
-					lv_expr_10_0=ruleUnaryExpr
+					lv_expr_11_0=ruleUnaryExpr
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getUnaryExprRule());
@@ -484,7 +517,7 @@ ruleUnaryExpr returns [EObject current=null]
 						set(
 							$current,
 							"expr",
-							lv_expr_10_0,
+							lv_expr_11_0,
 							"edu.ltl.wallin.LTL.UnaryExpr");
 						afterParserOrEnumRuleCall();
 					}
@@ -495,9 +528,9 @@ ruleUnaryExpr returns [EObject current=null]
 		{
 			newCompositeNode(grammarAccess.getUnaryExprAccess().getLiteralParserRuleCall_2());
 		}
-		this_Literal_11=ruleLiteral
+		this_Literal_12=ruleLiteral
 		{
-			$current = $this_Literal_11.current;
+			$current = $this_Literal_12.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -545,24 +578,72 @@ ruleLiteral returns [EObject current=null]
 					}
 				)
 			)
+			(
+				otherlv_2='lower='
+				{
+					newLeafNode(otherlv_2, grammarAccess.getLiteralAccess().getLowerKeyword_0_2_0());
+				}
+				(
+					(
+						lv_lowerBound_3_0=RULE_INT
+						{
+							newLeafNode(lv_lowerBound_3_0, grammarAccess.getLiteralAccess().getLowerBoundINTTerminalRuleCall_0_2_1_0());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getLiteralRule());
+							}
+							setWithLastConsumed(
+								$current,
+								"lowerBound",
+								lv_lowerBound_3_0,
+								"org.eclipse.xtext.common.Terminals.INT");
+						}
+					)
+				)
+			)?
+			(
+				otherlv_4='upper='
+				{
+					newLeafNode(otherlv_4, grammarAccess.getLiteralAccess().getUpperKeyword_0_3_0());
+				}
+				(
+					(
+						lv_upperBound_5_0=RULE_INT
+						{
+							newLeafNode(lv_upperBound_5_0, grammarAccess.getLiteralAccess().getUpperBoundINTTerminalRuleCall_0_3_1_0());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getLiteralRule());
+							}
+							setWithLastConsumed(
+								$current,
+								"upperBound",
+								lv_upperBound_5_0,
+								"org.eclipse.xtext.common.Terminals.INT");
+						}
+					)
+				)
+			)?
 		)
 		    |
 		(
-			otherlv_2='('
+			otherlv_6='('
 			{
-				newLeafNode(otherlv_2, grammarAccess.getLiteralAccess().getLeftParenthesisKeyword_1_0());
+				newLeafNode(otherlv_6, grammarAccess.getLiteralAccess().getLeftParenthesisKeyword_1_0());
 			}
 			{
 				newCompositeNode(grammarAccess.getLiteralAccess().getFormulaParserRuleCall_1_1());
 			}
-			this_Formula_3=ruleFormula
+			this_Formula_7=ruleFormula
 			{
-				$current = $this_Formula_3.current;
+				$current = $this_Formula_7.current;
 				afterParserOrEnumRuleCall();
 			}
-			otherlv_4=')'
+			otherlv_8=')'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getLiteralAccess().getRightParenthesisKeyword_1_2());
+				newLeafNode(otherlv_8, grammarAccess.getLiteralAccess().getRightParenthesisKeyword_1_2());
 			}
 		)
 	)

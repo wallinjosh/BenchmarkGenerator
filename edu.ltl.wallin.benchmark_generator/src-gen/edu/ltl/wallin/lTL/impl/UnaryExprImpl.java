@@ -24,8 +24,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.ltl.wallin.lTL.impl.UnaryExprImpl#getOp <em>Op</em>}</li>
- *   <li>{@link edu.ltl.wallin.lTL.impl.UnaryExprImpl#getLowerBound <em>Lower Bound</em>}</li>
- *   <li>{@link edu.ltl.wallin.lTL.impl.UnaryExprImpl#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link edu.ltl.wallin.lTL.impl.UnaryExprImpl#isEnd <em>End</em>}</li>
  *   <li>{@link edu.ltl.wallin.lTL.impl.UnaryExprImpl#getExpr <em>Expr</em>}</li>
  * </ul>
  *
@@ -54,44 +53,24 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
   protected String op = OP_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
+   * The default value of the '{@link #isEnd() <em>End</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getLowerBound()
+   * @see #isEnd()
    * @generated
    * @ordered
    */
-  protected static final int LOWER_BOUND_EDEFAULT = 0;
+  protected static final boolean END_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute.
+   * The cached value of the '{@link #isEnd() <em>End</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getLowerBound()
+   * @see #isEnd()
    * @generated
    * @ordered
    */
-  protected int lowerBound = LOWER_BOUND_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getUpperBound()
-   * @generated
-   * @ordered
-   */
-  protected static final int UPPER_BOUND_EDEFAULT = 0;
-
-  /**
-   * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getUpperBound()
-   * @generated
-   * @ordered
-   */
-  protected int upperBound = UPPER_BOUND_EDEFAULT;
+  protected boolean end = END_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getExpr() <em>Expr</em>}' containment reference.
@@ -152,9 +131,9 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getLowerBound()
+  public boolean isEnd()
   {
-    return lowerBound;
+    return end;
   }
 
   /**
@@ -162,35 +141,12 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setLowerBound(int newLowerBound)
+  public void setEnd(boolean newEnd)
   {
-    int oldLowerBound = lowerBound;
-    lowerBound = newLowerBound;
+    boolean oldEnd = end;
+    end = newEnd;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LTLPackage.UNARY_EXPR__LOWER_BOUND, oldLowerBound, lowerBound));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public int getUpperBound()
-  {
-    return upperBound;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setUpperBound(int newUpperBound)
-  {
-    int oldUpperBound = upperBound;
-    upperBound = newUpperBound;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LTLPackage.UNARY_EXPR__UPPER_BOUND, oldUpperBound, upperBound));
+      eNotify(new ENotificationImpl(this, Notification.SET, LTLPackage.UNARY_EXPR__END, oldEnd, end));
   }
 
   /**
@@ -269,10 +225,8 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
     {
       case LTLPackage.UNARY_EXPR__OP:
         return getOp();
-      case LTLPackage.UNARY_EXPR__LOWER_BOUND:
-        return getLowerBound();
-      case LTLPackage.UNARY_EXPR__UPPER_BOUND:
-        return getUpperBound();
+      case LTLPackage.UNARY_EXPR__END:
+        return isEnd();
       case LTLPackage.UNARY_EXPR__EXPR:
         return getExpr();
     }
@@ -292,11 +246,8 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
       case LTLPackage.UNARY_EXPR__OP:
         setOp((String)newValue);
         return;
-      case LTLPackage.UNARY_EXPR__LOWER_BOUND:
-        setLowerBound((Integer)newValue);
-        return;
-      case LTLPackage.UNARY_EXPR__UPPER_BOUND:
-        setUpperBound((Integer)newValue);
+      case LTLPackage.UNARY_EXPR__END:
+        setEnd((Boolean)newValue);
         return;
       case LTLPackage.UNARY_EXPR__EXPR:
         setExpr((Formula)newValue);
@@ -318,11 +269,8 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
       case LTLPackage.UNARY_EXPR__OP:
         setOp(OP_EDEFAULT);
         return;
-      case LTLPackage.UNARY_EXPR__LOWER_BOUND:
-        setLowerBound(LOWER_BOUND_EDEFAULT);
-        return;
-      case LTLPackage.UNARY_EXPR__UPPER_BOUND:
-        setUpperBound(UPPER_BOUND_EDEFAULT);
+      case LTLPackage.UNARY_EXPR__END:
+        setEnd(END_EDEFAULT);
         return;
       case LTLPackage.UNARY_EXPR__EXPR:
         setExpr((Formula)null);
@@ -343,10 +291,8 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
     {
       case LTLPackage.UNARY_EXPR__OP:
         return OP_EDEFAULT == null ? op != null : !OP_EDEFAULT.equals(op);
-      case LTLPackage.UNARY_EXPR__LOWER_BOUND:
-        return lowerBound != LOWER_BOUND_EDEFAULT;
-      case LTLPackage.UNARY_EXPR__UPPER_BOUND:
-        return upperBound != UPPER_BOUND_EDEFAULT;
+      case LTLPackage.UNARY_EXPR__END:
+        return end != END_EDEFAULT;
       case LTLPackage.UNARY_EXPR__EXPR:
         return expr != null;
     }
@@ -366,10 +312,8 @@ public class UnaryExprImpl extends FormulaImpl implements UnaryExpr
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (op: ");
     result.append(op);
-    result.append(", lowerBound: ");
-    result.append(lowerBound);
-    result.append(", upperBound: ");
-    result.append(upperBound);
+    result.append(", end: ");
+    result.append(end);
     result.append(')');
     return result.toString();
   }

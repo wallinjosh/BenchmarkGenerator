@@ -3,6 +3,7 @@
  */
 package edu.ltl.wallin.generator;
 
+import edu.ltl.wallin.generator.ComputeDeadlines;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
@@ -15,7 +16,12 @@ import org.eclipse.xtext.generator.IGeneratorContext;
  */
 @SuppressWarnings("all")
 public class LTLGenerator extends AbstractGenerator {
+  public static void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context, final int trace_length, final boolean verbose) {
+    ComputeDeadlines.transformFormula(resource, trace_length, verbose);
+  }
+  
   @Override
-  public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+  public void doGenerate(final Resource input, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+    LTLGenerator.doGenerate(input, fsa, context, 10, true);
   }
 }

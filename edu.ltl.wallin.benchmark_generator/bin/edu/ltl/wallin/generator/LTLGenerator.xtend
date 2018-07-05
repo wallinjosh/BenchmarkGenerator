@@ -15,11 +15,12 @@ import org.eclipse.xtext.generator.IGeneratorContext
  */
 class LTLGenerator extends AbstractGenerator {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+	def static void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context, int trace_length, boolean verbose) {
+		ComputeDeadlines.transformFormula(resource, trace_length, verbose);
 	}
+	
+	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		doGenerate(input, fsa, context, 10, true);
+	}
+	
 }

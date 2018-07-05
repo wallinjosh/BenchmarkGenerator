@@ -7,7 +7,7 @@ Formula:
 ;
 
 UntilFormula returns Formula:
-	ConnectiveFormula (=> ( {BinaryExpr.left=current} op='U' '[' lowerBound=INT ',' upperBound=INT ']') right=ConnectiveFormula)*
+	ConnectiveFormula (=> ( {BinaryExpr.left=current} op='U' '[' (lowerBound=INT)? ',' (end ?= 'end')? (upperBound=INT)? ']') right=ConnectiveFormula)*
 ;
 
 ConnectiveFormula returns Formula:
@@ -15,13 +15,13 @@ ConnectiveFormula returns Formula:
 ;
 
 UnaryExpr returns Formula:
-	{UnaryExpr} op=('F' | 'G') '[' lowerBound=INT ',' upperBound=INT ']' expr=UnaryExpr
+	{UnaryExpr} op=('F' | 'G') '[' (lowerBound=INT)? ',' (end?='end')? (upperBound=INT)? ']' expr=UnaryExpr
 | 	{UnaryExpr} op=('-') expr=UnaryExpr
 |	Literal
 ;
 
 Literal returns Formula:
-	{IdFormula} varName=VAR_NAME
+	{IdFormula} varName=VAR_NAME ('lower=' lowerBound=INT)? ('upper=' upperBound=INT)?
 |	'(' Formula ')'
 ;
 

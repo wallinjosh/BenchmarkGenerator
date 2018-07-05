@@ -16,9 +16,7 @@ import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Parameter;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.serializer.ISerializationContext;
-import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
-import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
 public class LTLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
@@ -60,7 +58,14 @@ public class LTLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *
 	 * Constraint:
 	 *     (
-	 *         (left=UntilFormula_BinaryExpr_1_0_0_0 op='U' lowerBound=INT upperBound=INT right=ConnectiveFormula) | 
+	 *         (
+	 *             left=UntilFormula_BinaryExpr_1_0_0_0 
+	 *             op='U' 
+	 *             lowerBound=INT? 
+	 *             end?='end'? 
+	 *             upperBound=INT? 
+	 *             right=ConnectiveFormula
+	 *         ) | 
 	 *         (left=ConnectiveFormula_BinaryExpr_1_0_0_0 (op='&' | op='|') right=UnaryExpr)
 	 *     )
 	 */
@@ -80,16 +85,10 @@ public class LTLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     Literal returns IdFormula
 	 *
 	 * Constraint:
-	 *     varName=VAR_NAME
+	 *     (varName=VAR_NAME lowerBound=INT? upperBound=INT?)
 	 */
 	protected void sequence_Literal(ISerializationContext context, IdFormula semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, LTLPackage.Literals.ID_FORMULA__VAR_NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LTLPackage.Literals.ID_FORMULA__VAR_NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getLiteralAccess().getVarNameVAR_NAMETerminalRuleCall_0_1_0(), semanticObject.getVarName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -104,7 +103,7 @@ public class LTLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     Literal returns UnaryExpr
 	 *
 	 * Constraint:
-	 *     (((op='F' | op='G') lowerBound=INT upperBound=INT expr=UnaryExpr) | (op='-' expr=UnaryExpr))
+	 *     (((op='F' | op='G') lowerBound=INT? end?='end'? upperBound=INT? expr=UnaryExpr) | (op='-' expr=UnaryExpr))
 	 */
 	protected void sequence_UnaryExpr(ISerializationContext context, UnaryExpr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

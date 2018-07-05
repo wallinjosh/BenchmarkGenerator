@@ -14,8 +14,7 @@ package edu.ltl.wallin.lTL;
  * </p>
  * <ul>
  *   <li>{@link edu.ltl.wallin.lTL.UnaryExpr#getOp <em>Op</em>}</li>
- *   <li>{@link edu.ltl.wallin.lTL.UnaryExpr#getLowerBound <em>Lower Bound</em>}</li>
- *   <li>{@link edu.ltl.wallin.lTL.UnaryExpr#getUpperBound <em>Upper Bound</em>}</li>
+ *   <li>{@link edu.ltl.wallin.lTL.UnaryExpr#isEnd <em>End</em>}</li>
  *   <li>{@link edu.ltl.wallin.lTL.UnaryExpr#getExpr <em>Expr</em>}</li>
  * </ul>
  *
@@ -52,56 +51,30 @@ public interface UnaryExpr extends Formula
   void setOp(String value);
 
   /**
-   * Returns the value of the '<em><b>Lower Bound</b></em>' attribute.
+   * Returns the value of the '<em><b>End</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Lower Bound</em>' attribute isn't clear,
+   * If the meaning of the '<em>End</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Lower Bound</em>' attribute.
-   * @see #setLowerBound(int)
-   * @see edu.ltl.wallin.lTL.LTLPackage#getUnaryExpr_LowerBound()
+   * @return the value of the '<em>End</em>' attribute.
+   * @see #setEnd(boolean)
+   * @see edu.ltl.wallin.lTL.LTLPackage#getUnaryExpr_End()
    * @model
    * @generated
    */
-  int getLowerBound();
+  boolean isEnd();
 
   /**
-   * Sets the value of the '{@link edu.ltl.wallin.lTL.UnaryExpr#getLowerBound <em>Lower Bound</em>}' attribute.
+   * Sets the value of the '{@link edu.ltl.wallin.lTL.UnaryExpr#isEnd <em>End</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Lower Bound</em>' attribute.
-   * @see #getLowerBound()
+   * @param value the new value of the '<em>End</em>' attribute.
+   * @see #isEnd()
    * @generated
    */
-  void setLowerBound(int value);
-
-  /**
-   * Returns the value of the '<em><b>Upper Bound</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Upper Bound</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Upper Bound</em>' attribute.
-   * @see #setUpperBound(int)
-   * @see edu.ltl.wallin.lTL.LTLPackage#getUnaryExpr_UpperBound()
-   * @model
-   * @generated
-   */
-  int getUpperBound();
-
-  /**
-   * Sets the value of the '{@link edu.ltl.wallin.lTL.UnaryExpr#getUpperBound <em>Upper Bound</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Upper Bound</em>' attribute.
-   * @see #getUpperBound()
-   * @generated
-   */
-  void setUpperBound(int value);
+  void setEnd(boolean value);
 
   /**
    * Returns the value of the '<em><b>Expr</b></em>' containment reference.

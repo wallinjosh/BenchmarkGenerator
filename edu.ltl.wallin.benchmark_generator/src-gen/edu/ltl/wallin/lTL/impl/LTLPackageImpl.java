@@ -131,6 +131,26 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getFormula_LowerBound()
+  {
+    return (EAttribute)formulaEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFormula_UpperBound()
+  {
+    return (EAttribute)formulaEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getBinaryExpr()
   {
     return binaryExprEClass;
@@ -161,7 +181,7 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBinaryExpr_LowerBound()
+  public EAttribute getBinaryExpr_End()
   {
     return (EAttribute)binaryExprEClass.getEStructuralFeatures().get(2);
   }
@@ -171,19 +191,9 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBinaryExpr_UpperBound()
-  {
-    return (EAttribute)binaryExprEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getBinaryExpr_Right()
   {
-    return (EReference)binaryExprEClass.getEStructuralFeatures().get(4);
+    return (EReference)binaryExprEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -211,7 +221,7 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getUnaryExpr_LowerBound()
+  public EAttribute getUnaryExpr_End()
   {
     return (EAttribute)unaryExprEClass.getEStructuralFeatures().get(1);
   }
@@ -221,19 +231,9 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getUnaryExpr_UpperBound()
-  {
-    return (EAttribute)unaryExprEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getUnaryExpr_Expr()
   {
-    return (EReference)unaryExprEClass.getEStructuralFeatures().get(3);
+    return (EReference)unaryExprEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -287,18 +287,18 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
 
     // Create classes and their features
     formulaEClass = createEClass(FORMULA);
+    createEAttribute(formulaEClass, FORMULA__LOWER_BOUND);
+    createEAttribute(formulaEClass, FORMULA__UPPER_BOUND);
 
     binaryExprEClass = createEClass(BINARY_EXPR);
     createEReference(binaryExprEClass, BINARY_EXPR__LEFT);
     createEAttribute(binaryExprEClass, BINARY_EXPR__OP);
-    createEAttribute(binaryExprEClass, BINARY_EXPR__LOWER_BOUND);
-    createEAttribute(binaryExprEClass, BINARY_EXPR__UPPER_BOUND);
+    createEAttribute(binaryExprEClass, BINARY_EXPR__END);
     createEReference(binaryExprEClass, BINARY_EXPR__RIGHT);
 
     unaryExprEClass = createEClass(UNARY_EXPR);
     createEAttribute(unaryExprEClass, UNARY_EXPR__OP);
-    createEAttribute(unaryExprEClass, UNARY_EXPR__LOWER_BOUND);
-    createEAttribute(unaryExprEClass, UNARY_EXPR__UPPER_BOUND);
+    createEAttribute(unaryExprEClass, UNARY_EXPR__END);
     createEReference(unaryExprEClass, UNARY_EXPR__EXPR);
 
     idFormulaEClass = createEClass(ID_FORMULA);
@@ -340,18 +340,18 @@ public class LTLPackageImpl extends EPackageImpl implements LTLPackage
 
     // Initialize classes and features; add operations and parameters
     initEClass(formulaEClass, Formula.class, "Formula", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getFormula_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 0, 1, Formula.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFormula_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 0, 1, Formula.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(binaryExprEClass, BinaryExpr.class, "BinaryExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getBinaryExpr_Left(), this.getFormula(), null, "left", null, 0, 1, BinaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBinaryExpr_Op(), ecorePackage.getEString(), "op", null, 0, 1, BinaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getBinaryExpr_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 0, 1, BinaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getBinaryExpr_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 0, 1, BinaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getBinaryExpr_End(), ecorePackage.getEBoolean(), "end", null, 0, 1, BinaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBinaryExpr_Right(), this.getFormula(), null, "right", null, 0, 1, BinaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(unaryExprEClass, UnaryExpr.class, "UnaryExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getUnaryExpr_Op(), ecorePackage.getEString(), "op", null, 0, 1, UnaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getUnaryExpr_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 0, 1, UnaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getUnaryExpr_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 0, 1, UnaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getUnaryExpr_End(), ecorePackage.getEBoolean(), "end", null, 0, 1, UnaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getUnaryExpr_Expr(), this.getFormula(), null, "expr", null, 0, 1, UnaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(idFormulaEClass, IdFormula.class, "IdFormula", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
