@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 public class Main {
   public static void main(final String[] args) {
     boolean verbose = false;
+    String output_filename = "BC_OUTPUT";
     boolean _isEmpty = ((List<String>)Conversions.doWrapArray(args)).isEmpty();
     if (_isEmpty) {
       System.err.println("Aborting: no formula provided!");
@@ -33,19 +34,26 @@ public class Main {
       int _length = args.length;
       boolean _lessThan = (_length < 2);
       if (_lessThan) {
-        System.err.println("Aborting: trace length missing!");
+        System.err.println("Aborting: trace length or formula missing!");
         return;
       }
     }
-    for (final String s : args) {
-      boolean _equals = s.equals("-v");
-      if (_equals) {
-        verbose = true;
+    int i = 0;
+    for (i = 0; (i < args.length); i++) {
+      {
+        boolean _equals = args[i].equals("-v");
+        if (_equals) {
+          verbose = true;
+        }
+        boolean _equals_1 = args[i].equals("-o");
+        if (_equals_1) {
+          output_filename = args[(i + 1)];
+        }
       }
     }
     final Injector injector = new LTLStandaloneSetup().createInjectorAndDoEMFRegistration();
     final Main main = injector.<Main>getInstance(Main.class);
-    main.runGenerator(args[0], Integer.parseInt(args[1]), verbose);
+    main.runGenerator(args[0], Integer.parseInt(args[1]), verbose, output_filename);
   }
   
   @Inject
@@ -60,7 +68,7 @@ public class Main {
   @Inject
   private JavaIoFileSystemAccess fileAccess;
   
-  protected void runGenerator(final String string, final int trace_length, final boolean verbose) {
+  protected void runGenerator(final String string, final int trace_length, final boolean verbose, final String output_filename) {
     final ResourceSet set = this.resourceSetProvider.get();
     final Resource resource = set.getResource(URI.createFileURI(string), true);
     this.fileAccess.setOutputPath("src-gen/");
@@ -69,7 +77,7 @@ public class Main {
       it.setCancelIndicator(CancelIndicator.NullImpl);
     };
     final GeneratorContext context = ObjectExtensions.<GeneratorContext>operator_doubleArrow(_generatorContext, _function);
-    LTLGenerator.doGenerate(resource, this.fileAccess, context, trace_length, verbose);
+    LTLGenerator.doGenerate(resource, this.fileAccess, context, trace_length, verbose, output_filename);
     if (verbose) {
       System.out.println("Code generation finished.");
     }

@@ -1,5 +1,10 @@
 package edu.ltl.wallin.generator;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -138,7 +143,7 @@ public class ComputeDeadlines {
 		return false;
 	}
 	
-	private static int numVars(Formula f) {
+	public static HashSet<String> numVars(Formula f) {
 		HashSet<String> vars = new HashSet<String>();
 		TreeIterator<EObject> treeContents = f.eAllContents();
 		EObject cur = f;
@@ -147,7 +152,7 @@ public class ComputeDeadlines {
 			if(treeContents.hasNext()) cur = treeContents.next();
 			else cur = null;
 		}while(cur != null);
-		return vars.size();
+		return vars;
 	}
 	
 	private static Formula getTemporalLeaf(Formula f) {
@@ -198,23 +203,17 @@ public class ComputeDeadlines {
 		}
 	}
 	
-	public static void transformFormula(Resource r, int trace_length, boolean verbose) {
+	public static int transformFormula(Resource r, int trace_length, boolean verbose, String output_filename) {
 		Formula root = (Formula) r.getContents().get(0);
-		int num_vars = numVars(root);
+		int num_vars = numVars(root).size();
 		TRACE_LENGTH = trace_length;
+		StringBuffer output = new StringBuffer();
 		checkBounds(root);
 		root = (Formula) r.getContents().get(0);
-		if(verbose) System.out.print("INPUT FORMULA: ");
-		if(verbose)PerformTransforms.debugPrettyPrinter(root);
+		if(verbose) System.out.println("INPUT FORMULA: " + PerformTransforms.debugPrettyPrinter(root));
 		//Find a nested temporal expression ("a temporal leaf")
 		//Expand the leaf
 		//Repeat until there aren't any temporal expressions
-		System.out.println("BC1.1");
-		for(int i = 0; i < num_vars; i++) {
-			for(int j = 0; j <= TRACE_LENGTH; j++) {
-				System.out.println(((char) (i + 'a')) + Integer.toString(j) + ";");
-			}
-		}
 		while(containsTemporalOperators(root)) {
 			Formula leaf = getTemporalLeaf(root);
 			eliminateOperator(leaf);
@@ -225,10 +224,8 @@ public class ComputeDeadlines {
 			root = eliminateOperator(root);
 		}
 		root = (Formula) r.getContents().get(0);
-		if(verbose)System.out.print("OUTPUT FORMULA: ");
-		System.out.print("ASSIGN ");
-		PerformTransforms.debugPrettyPrinter(root);
-		
+		if(verbose)System.out.println("OUTPUT FORMULA: " + PerformTransforms.debugPrettyPrinter(root));
+		return num_vars;
 	}
 	
 }

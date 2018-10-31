@@ -16,37 +16,41 @@ import org.eclipse.xtext.EcoreUtil2;
 
 public class PerformTransforms {
 	
+	private static StringBuffer sb = new StringBuffer();
+	
 	private static void debugPrettyPrinterHelper(Formula f) {
 		if(f instanceof UnaryExpr) {
 			UnaryExpr castUnary = (UnaryExpr) f;
-			if(!castUnary.getOp().equals("-")) System.out.print(castUnary.getOp());
-			if(castUnary.getOp().equals("-")) System.out.print("!");
-			if(!castUnary.getOp().equals("-")) System.out.print("[" + castUnary.getLowerBound() + "," + castUnary.getUpperBound() + "] ");
-			System.out.print("(");
+			if(!castUnary.getOp().equals("-")) sb.append(castUnary.getOp());
+			if(castUnary.getOp().equals("-")) sb.append("!");
+			if(!castUnary.getOp().equals("-")) sb.append("[" + castUnary.getLowerBound() + "," + castUnary.getUpperBound() + "] ");
+			sb.append("(");
 			if(!castUnary.eContents().isEmpty()) {
 				debugPrettyPrinterHelper((Formula) castUnary.getExpr());
 			}
-			System.out.print(")");
+			sb.append(")");
 		} else if(f instanceof BinaryExpr) {
 			BinaryExpr castBinary = (BinaryExpr) f;
-			System.out.print("(");
+			sb.append("(");
 			debugPrettyPrinterHelper(castBinary.getLeft());
-			System.out.print(")");
-			System.out.print(" " + castBinary.getOp() + " ");
+			sb.append(")");
+			sb.append(" " + castBinary.getOp() + " ");
 			if(castBinary.getLowerBound() != castBinary.getUpperBound()) {
-				System.out.print("[" + castBinary.getLowerBound() + "," + castBinary.getUpperBound() + "] ");
+				sb.append("[" + castBinary.getLowerBound() + "," + castBinary.getUpperBound() + "] ");
 			}
-			System.out.print("(");
+			sb.append("(");
 			debugPrettyPrinterHelper(castBinary.getRight());
-			System.out.print(")");
+			sb.append(")");
 		} else if (f instanceof IdFormula) {
-			System.out.print(((IdFormula)f).getVarName() + ((IdFormula)f).getLowerBound());
+			sb.append(((IdFormula)f).getVarName() + ((IdFormula)f).getLowerBound());
 		}
 	}
 	
-	static void debugPrettyPrinter(Formula f) {
+	static String debugPrettyPrinter(Formula f) {
+		sb = new StringBuffer();
 		debugPrettyPrinterHelper(f);
-		System.out.print(";\n");
+		sb.append(";\n");
+		return sb.toString();
 	}
 	
 	static BinaryExpr composeBinaryExpr(ArrayList<Formula> subFormulas, String op) {
