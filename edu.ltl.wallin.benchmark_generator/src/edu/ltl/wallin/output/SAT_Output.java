@@ -8,12 +8,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.ltl.wallin.generator.ComputeDeadlines;
 import edu.ltl.wallin.generator.LTLGenerator;
+import edu.ltl.wallin.generator.PerformTransforms;
 import edu.ltl.wallin.lTL.BinaryExpr;
 import edu.ltl.wallin.lTL.Formula;
 import edu.ltl.wallin.lTL.IdFormula;
@@ -22,29 +24,27 @@ import edu.ltl.wallin.lTL.UnaryExpr;
 public class SAT_Output {
 	
 	private static StringBuffer sb;
-	private static final String BCZCHAFF_LOCATION = "/Users/Josh/RV18/BenchmarkGenerator/bczchaff";
+	private static final String BCZCHAFF_LOCATION = "/Users/Josh/Desktop/BenchmarkGenerator/bczchaff";
+	private static final String Z3 = "z3";
 	
 	private static void satPrinterHelper(Formula f) {
 		if(f instanceof UnaryExpr) {
 			UnaryExpr castUnary = (UnaryExpr) f;
-			if(!castUnary.getOp().equals("-")) sb.append(castUnary.getOp());
-			if(castUnary.getOp().equals("-")) sb.append("!");
-			if(!castUnary.getOp().equals("-")) sb.append("[" + castUnary.getLowerBound() + "," + castUnary.getUpperBound() + "] ");
 			sb.append("(");
+			if(!castUnary.getOp().equals("-")) sb.append(castUnary.getOp());
+			if(castUnary.getOp().equals("-")) sb.append("not ");
+			if(!castUnary.getOp().equals("-")) sb.append("[" + castUnary.getLowerBound() + "," + castUnary.getUpperBound() + "] ");
 			if(!castUnary.eContents().isEmpty()) {
 				satPrinterHelper((Formula) castUnary.getExpr());
 			}
 			sb.append(")");
 		} else if(f instanceof BinaryExpr) {
 			BinaryExpr castBinary = (BinaryExpr) f;
-			sb.append("(");
+			sb.append("(" + (castBinary.getOp().equals("&") ? "and " : "or "));
+			//sb.append(" (");
 			satPrinterHelper(castBinary.getLeft());
-			sb.append(")");
-			sb.append(" " + castBinary.getOp() + " ");
-			if(castBinary.getLowerBound() != castBinary.getUpperBound()) {
-				sb.append("[" + castBinary.getLowerBound() + "," + castBinary.getUpperBound() + "] ");
-			}
-			sb.append("(");
+			sb.append(" ");
+			//sb.append(") ");
 			satPrinterHelper(castBinary.getRight());
 			sb.append(")");
 		} else if (f instanceof IdFormula) {
@@ -71,23 +71,62 @@ public class SAT_Output {
 		return vars.size();
 	}
 	
-	public static String writeForBczchaff(Formula f, String output_filename, int trace_length) {
-		StringBuffer Sat_buffer = new StringBuffer();
-		Sat_buffer.append("BC1.1\n");
+	private static int maxDepth(Formula f) {
+		//System.out.println(PerformTransforms.debugPrettyPrinter(f));
+		int maxDepth = 0;
+		String varPattern = "[a-zA-Z]";
+		TreeIterator<EObject> treeContents = f.eAllContents();
+		EObject cur = f;
+		do {
+			if(cur instanceof IdFormula) {
+				if(((IdFormula)cur).getUpperBound() > maxDepth) {
+					maxDepth = ((IdFormula)cur).getUpperBound();
+				}
+			}
+			if(treeContents.hasNext()) cur = treeContents.next();
+			else cur = null;
+		}while(cur != null);
+		return maxDepth;
+	}
+	
+	private static void incrementFormula(Formula f) {
+		TreeIterator<EObject> treeContents = f.eAllContents();
+		EObject cur = f;
+		do {
+			if(cur instanceof IdFormula) {
+				((IdFormula) cur).setLowerBound(((IdFormula) cur).getLowerBound() + 1);
+				((IdFormula) cur).setUpperBound(((IdFormula) cur).getUpperBound() + 1);
+			}
+			if(treeContents.hasNext()) cur = treeContents.next();
+			else cur = null;
+		}while(cur != null);
 		
+	}
+	
+	public static String writeForSMT(Formula f, String output_filename, int trace_length) {
+		StringBuffer Sat_buffer = new StringBuffer();
+		//Sat_buffer.append("BC1.1\n");
+		System.out.println(maxDepth(f));
 		for(String s : ComputeDeadlines.numVars(f)) {
-			for(int j = 0; j <= trace_length; j++) {
-				Sat_buffer.append((s) + Integer.toString(j) + ";\n");
+			for(int j = 0; j <= trace_length + maxDepth(f); j++) {
+				Sat_buffer.append("(declare-fun " + (s) + Integer.toString(j) + "() (Bool))\n");
 			}
 		}
 	
-		Sat_buffer.append("ASSIGN ");
-		Sat_buffer.append(satPrinter(f) + ";");
+		int t = 0;
+		for(t = 0; t < trace_length; t++) {
+			Sat_buffer.append("(define-fun t" + t + "() Bool" + satPrinter(f) + ")\n");
+			Sat_buffer.append("(assert-soft t" + t + ")\n");
+			//increment formula by 1
+			incrementFormula(f);
+		}
+		Sat_buffer.append("(set-option :opt.priority pareto)\n" + 
+				"(check-sat)\n(get-model)\n");
 		
 		String output = Sat_buffer.toString();
 		
 		try {
-			BufferedWriter output_writer = new BufferedWriter(new FileWriter(output_filename + ".bc"));
+			BufferedWriter output_writer = new BufferedWriter(new FileWriter(output_filename + ".smt"));
 			output_writer.write(output);
 			output_writer.close();
 		} catch (IOException e) {
@@ -103,6 +142,22 @@ public class SAT_Output {
 		try {
 			Process run_bczchaff = Runtime.getRuntime().exec(BCZCHAFF_LOCATION + " " + input_filename);
 			BufferedReader response_reader = new BufferedReader(new InputStreamReader(run_bczchaff.getInputStream()));
+			while((temp = response_reader.readLine()) != null) {
+				response += temp;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	public static String callGetZ3(String input_filename) {
+		String response = "";
+		String temp = "";
+		try {
+			Process run_z3 = Runtime.getRuntime().exec(Z3 + " " + input_filename);
+			BufferedReader response_reader = new BufferedReader(new InputStreamReader(run_z3.getInputStream()));
 			while((temp = response_reader.readLine()) != null) {
 				response += temp;
 			}
@@ -156,6 +211,75 @@ public class SAT_Output {
 			
 			for(String s : var_set) {
 				trace += variableValues.get(s).get(t) + ", ";
+			}
+			
+			trace += "\n";
+		}
+		trace += "\n";
+		
+		BufferedWriter trace_output;
+		try {
+			trace_output = new BufferedWriter(new FileWriter(output_filename + "_trace_output.csv"));
+			trace_output.write(trace);
+			trace_output.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return trace;
+	}
+	
+	public static String processSMTResponse(String bczchaff_result, String output_filename, HashSet<String> var_set, int trace_length) {
+		if(bczchaff_result.contains("unsat")) return "UNSATISFIABLE";
+
+		String trace = "";
+		HashMap<String, HashMap<Integer, Boolean>> variableValues = new HashMap<String, HashMap<Integer, Boolean>>();
+				
+		//Set all variables to false before reading in actual values
+		for(String var : var_set) {
+			HashMap<Integer, Boolean> varMap = new HashMap<Integer, Boolean>();
+			for(int j = 0; j < trace_length; j++) {
+				varMap.put(j, false);
+			}
+			variableValues.put(var, varMap);
+		}
+		
+		//Read result for var values
+		String[] results = bczchaff_result.split(" ");
+//		for(String fs : results) {
+//			System.out.println("||" + fs + "||");
+//		}
+
+		String s;
+		for(int i = 0; i < results.length; i++) {
+			s = results[i];
+			if(s.contains("define-fun")) {
+				i++;
+				String  var_name = results[i]; //Now is variable name;
+				i+=6;
+				s = results[i];
+				boolean isTrue = s.contains("true");
+				System.out.println(var_name + " : " + s);
+				variableValues.get(var_name.substring(0,1)).put(Integer.parseInt(var_name.substring(1)), isTrue);
+			}
+		}
+		
+		
+			
+		//Add variable labels at top
+		trace += "TIME, ";
+		for(String r : var_set) {
+			trace += (r) + ", ";
+		}
+		trace += "\n";
+		//Add variable values
+		for(int t = 0; t < trace_length; t++) {
+			
+			trace += t + ", ";
+			
+			for(String v : var_set) {
+				trace += variableValues.get(v).get(t) + ", ";
 			}
 			
 			trace += "\n";

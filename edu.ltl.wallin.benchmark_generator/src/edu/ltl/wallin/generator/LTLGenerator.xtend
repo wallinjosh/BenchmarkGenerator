@@ -40,11 +40,11 @@ class LTLGenerator extends AbstractGenerator {
 		log("STARTING FORMULA\n\n" + PerformTransforms.debugPrettyPrinter(resource.getContents().get(0) as Formula) + "\n", log_writer);
 		ComputeDeadlines.transformFormula(resource, trace_length, verbose, output_filename);
 		val var_set = ComputeDeadlines.numVars(resource.getContents().get(0) as Formula);
-		val sat_query = SAT_Output.writeForBczchaff(resource.getContents().get(0) as Formula, modified_output_filename, trace_length);
+		val sat_query = SAT_Output.writeForSMT(resource.getContents().get(0) as Formula, modified_output_filename, trace_length);
 		log("GENERATED SAT QUERY\n\n" + sat_query + "\n", log_writer);
-		val sat_result = SAT_Output.callGetBczchaff(modified_output_filename + ".bc");
+		val sat_result = SAT_Output.callGetZ3(modified_output_filename + ".smt");
 		log("SAT SOLVER RESULT\n\n" + sat_result + "\n", log_writer);
-		val trace = SAT_Output.processBczchaffResponse(sat_result, modified_output_filename, var_set, trace_length);
+		val trace = SAT_Output.processSMTResponse(sat_result, modified_output_filename, var_set, trace_length);
 		log("GENERATED TRACE\n\n" + trace + "\n", log_writer);
 		log_writer.close();
 	}

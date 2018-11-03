@@ -65,11 +65,11 @@ public class LTLGenerator extends AbstractGenerator {
       EObject _get_1 = resource.getContents().get(0);
       final HashSet<String> var_set = ComputeDeadlines.numVars(((Formula) _get_1));
       EObject _get_2 = resource.getContents().get(0);
-      final String sat_query = SAT_Output.writeForBczchaff(((Formula) _get_2), modified_output_filename, trace_length);
+      final String sat_query = SAT_Output.writeForSMT(((Formula) _get_2), modified_output_filename, trace_length);
       LTLGenerator.log((("GENERATED SAT QUERY\n\n" + sat_query) + "\n"), log_writer);
-      final String sat_result = SAT_Output.callGetBczchaff((modified_output_filename + ".bc"));
+      final String sat_result = SAT_Output.callGetZ3((modified_output_filename + ".smt"));
       LTLGenerator.log((("SAT SOLVER RESULT\n\n" + sat_result) + "\n"), log_writer);
-      final String trace = SAT_Output.processBczchaffResponse(sat_result, modified_output_filename, var_set, trace_length);
+      final String trace = SAT_Output.processSMTResponse(sat_result, modified_output_filename, var_set, trace_length);
       LTLGenerator.log((("GENERATED TRACE\n\n" + trace) + "\n"), log_writer);
       log_writer.close();
     } catch (Throwable _e) {
