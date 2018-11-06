@@ -115,14 +115,21 @@ public class SAT_Output {
 	
 		int t = 0;
 		for(t = 0; t < trace_length; t++) {
-			Sat_buffer.append("(define-fun t" + t + "() Bool" + satPrinter(f) + ")\n");
-			Sat_buffer.append("(assert-soft t" + t + ")\n");
+			//Sat_buffer.append("(declare-fun t" + t + "() (Bool))\n");
+			Sat_buffer.append("(define-fun O_t" + t + "() Bool" + satPrinter(f) + ")\n");
+			Sat_buffer.append("(assert-soft O_t" + t + ")\n");
+			//Sat_buffer.append("(assert-soft (and t" + t + " (and (or (not" + satPrinter(f) + ") t" + t + ")" + " (or " + satPrinter(f) + " (not t" + t + ")))" + "))\n");
+			//Sat_buffer.append("(assert-soft (and (or (not t" + t + ") " +   satPrinter(f) + ") t" + t + "))\n");
 			//increment formula by 1
 			incrementFormula(f);
 		}
 		Sat_buffer.append("(set-option :opt.priority pareto)\n" + 
 				"(check-sat)\n(get-model)\n");
-		
+		Sat_buffer.append("(echo \" \")\n");
+		for(t = 0; t <trace_length; t++) {
+			Sat_buffer.append("(eval O_t" + t + ")\n");
+			Sat_buffer.append("(echo \" \")\n");
+		}
 		String output = Sat_buffer.toString();
 		
 		try {
@@ -245,6 +252,13 @@ public class SAT_Output {
 			variableValues.put(var, varMap);
 		}
 		
+		var_set.add("O_t");
+		for(int i = 0; i < trace_length; i++) {
+			HashMap<Integer, Boolean> varMap = new HashMap<Integer, Boolean>();
+			varMap.put(i, false);
+			variableValues.put("O_t", varMap);
+		}
+		
 		//Read result for var values
 		String[] results = bczchaff_result.split(" ");
 //		for(String fs : results) {
@@ -252,7 +266,11 @@ public class SAT_Output {
 //		}
 
 		String s;
-		for(int i = 0; i < results.length; i++) {
+		int i = 0;
+//		for(String j : results) {
+//			System.out.println(j);
+//		}
+		for(i = 0; i < results.length - trace_length; i++) {
 			s = results[i];
 			if(s.contains("define-fun")) {
 				i++;
@@ -265,7 +283,10 @@ public class SAT_Output {
 			}
 		}
 		
-		
+		for(int t = i; t < i + trace_length; t++) {
+			System.out.println("O_t" + (t - i) + " :  " + results[t]);
+			variableValues.get("O_t").put((t-i), results[t].contains("true"));
+		}
 			
 		//Add variable labels at top
 		trace += "TIME, ";
