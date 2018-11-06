@@ -72,7 +72,6 @@ public class SAT_Output {
 	}
 	
 	private static int maxDepth(Formula f) {
-		//System.out.println(PerformTransforms.debugPrettyPrinter(f));
 		int maxDepth = 0;
 		String varPattern = "[a-zA-Z]";
 		TreeIterator<EObject> treeContents = f.eAllContents();
@@ -105,8 +104,7 @@ public class SAT_Output {
 	
 	public static String writeForSMT(Formula f, String output_filename, int trace_length) {
 		StringBuffer Sat_buffer = new StringBuffer();
-		//Sat_buffer.append("BC1.1\n");
-		System.out.println(maxDepth(f));
+
 		for(String s : ComputeDeadlines.numVars(f)) {
 			for(int j = 0; j <= trace_length + maxDepth(f); j++) {
 				Sat_buffer.append("(declare-fun " + (s) + Integer.toString(j) + "() (Bool))\n");
@@ -238,8 +236,6 @@ public class SAT_Output {
 	}
 	
 	public static String processSMTResponse(String bczchaff_result, String output_filename, HashSet<String> var_set, int trace_length) {
-		if(bczchaff_result.contains("unsat")) return "UNSATISFIABLE";
-
 		String trace = "";
 		HashMap<String, HashMap<Integer, Boolean>> variableValues = new HashMap<String, HashMap<Integer, Boolean>>();
 				
@@ -261,15 +257,11 @@ public class SAT_Output {
 		
 		//Read result for var values
 		String[] results = bczchaff_result.split(" ");
-//		for(String fs : results) {
-//			System.out.println("||" + fs + "||");
-//		}
+
 
 		String s;
 		int i = 0;
-//		for(String j : results) {
-//			System.out.println(j);
-//		}
+
 		for(i = 0; i < results.length - trace_length; i++) {
 			s = results[i];
 			if(s.contains("define-fun")) {
@@ -278,13 +270,11 @@ public class SAT_Output {
 				i+=6;
 				s = results[i];
 				boolean isTrue = s.contains("true");
-				System.out.println(var_name + " : " + s);
-				variableValues.get(var_name.substring(0,1)).put(Integer.parseInt(var_name.substring(1)), isTrue);
+				variableValues.get(var_name.replaceAll("[0-9]", "")).put(Integer.parseInt(var_name.replaceAll("[^0-9]", "")), isTrue);
 			}
 		}
 		
 		for(int t = i; t < i + trace_length; t++) {
-			System.out.println("O_t" + (t - i) + " :  " + results[t]);
 			variableValues.get("O_t").put((t-i), results[t].contains("true"));
 		}
 			
