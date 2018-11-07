@@ -106,16 +106,25 @@ public class SAT_Output {
 		StringBuffer Sat_buffer = new StringBuffer();
 
 		for(String s : ComputeDeadlines.numVars(f)) {
+			if(s.equalsIgnoreCase("initial")) continue;
 			for(int j = 0; j <= trace_length + maxDepth(f); j++) {
 				Sat_buffer.append("(declare-fun " + (s) + Integer.toString(j) + "() (Bool))\n");
 			}
 		}
+		
+		for(int j = 0; j <=trace_length + maxDepth(f); j++) {
+			Sat_buffer.append("(declare-fun INITIAL" + j +"() (Bool))\n");
+		}
 	
 		int t = 0;
-		for(t = 0; t < trace_length; t++) {
+		Sat_buffer.append("(define-fun O_t" + t + "() Bool" + "(and " + satPrinter(f) + " INITIAL0)" + ")\n");
+		Sat_buffer.append("(assert O_t" + t + ")\n");
+		incrementFormula(f);
+		for(t = 1; t < trace_length; t++) {
 			//Sat_buffer.append("(declare-fun t" + t + "() (Bool))\n");
 			Sat_buffer.append("(define-fun O_t" + t + "() Bool" + satPrinter(f) + ")\n");
 			Sat_buffer.append("(assert-soft O_t" + t + ")\n");
+			Sat_buffer.append("(assert (not INITIAL" + t + "))");
 			//Sat_buffer.append("(assert-soft (and t" + t + " (and (or (not" + satPrinter(f) + ") t" + t + ")" + " (or " + satPrinter(f) + " (not t" + t + ")))" + "))\n");
 			//Sat_buffer.append("(assert-soft (and (or (not t" + t + ") " +   satPrinter(f) + ") t" + t + "))\n");
 			//increment formula by 1
@@ -235,10 +244,12 @@ public class SAT_Output {
 		return trace;
 	}
 	
-	public static String processSMTResponse(String bczchaff_result, String output_filename, HashSet<String> var_set, int trace_length) {
+	public static String processSMTResponse(String smt_result, String output_filename, HashSet<String> var_set, int trace_length) {
 		String trace = "";
 		HashMap<String, HashMap<Integer, Boolean>> variableValues = new HashMap<String, HashMap<Integer, Boolean>>();
-				
+			
+		var_set.add("O_t");
+		var_set.add("INITIAL");
 		//Set all variables to false before reading in actual values
 		for(String var : var_set) {
 			HashMap<Integer, Boolean> varMap = new HashMap<Integer, Boolean>();
@@ -248,39 +259,49 @@ public class SAT_Output {
 			variableValues.put(var, varMap);
 		}
 		
-		var_set.add("O_t");
-		for(int i = 0; i < trace_length; i++) {
-			HashMap<Integer, Boolean> varMap = new HashMap<Integer, Boolean>();
-			varMap.put(i, false);
-			variableValues.put("O_t", varMap);
-		}
+
+//		for(int i = 0; i < trace_length; i++) {
+//			HashMap<Integer, Boolean> varMap = new HashMap<Integer, Boolean>();
+//			varMap.put(i, false);
+//			variableValues.put("O_t", varMap);
+//		}
+//		for(int i = 0; i < trace_length; i++) {
+//			HashMap<Integer, Boolean> varMap = new HashMap<Integer, Boolean>();
+//			varMap.put(i, false);
+//			variableValues.put("INITIAL", varMap);
+//		}
 		
-		//Read result for var values
-		String[] results = bczchaff_result.split(" ");
-
-
-		String s;
-		int i = 0;
-
-		for(i = 0; i < results.length - trace_length; i++) {
-			s = results[i];
-			if(s.contains("define-fun")) {
-				i++;
-				String  var_name = results[i]; //Now is variable name;
-				i+=6;
+		if(!smt_result.contains("unsat")) {
+		
+			//Read result for var values
+			String[] results = smt_result.split(" ");
+	
+	
+			String s;
+			int i = 0;
+	
+			for(i = 0; i < results.length - trace_length; i++) {
 				s = results[i];
-				boolean isTrue = s.contains("true");
-				variableValues.get(var_name.replaceAll("[0-9]", "")).put(Integer.parseInt(var_name.replaceAll("[^0-9]", "")), isTrue);
+				if(s.contains("define-fun")) {
+					i++;
+					String  var_name = results[i]; //Now is variable name;
+					i+=6;
+					s = results[i];
+					boolean isTrue = s.contains("true");
+					variableValues.get(var_name.replaceAll("[0-9]", "")).put(Integer.parseInt(var_name.replaceAll("[^0-9]", "")), isTrue);
+				}
+			}
+			
+			for(int t = i; t < i + trace_length; t++) {
+				variableValues.get("O_t").put((t-i), results[t].contains("true"));
 			}
 		}
 		
-		for(int t = i; t < i + trace_length; t++) {
-			variableValues.get("O_t").put((t-i), results[t].contains("true"));
-		}
-			
+
 		//Add variable labels at top
 		trace += "TIME, ";
 		for(String r : var_set) {
+			if(r.equalsIgnoreCase("initial")) continue;
 			trace += (r) + ", ";
 		}
 		trace += "\n";
@@ -290,6 +311,7 @@ public class SAT_Output {
 			trace += t + ", ";
 			
 			for(String v : var_set) {
+				if(v.equalsIgnoreCase("initial")) continue;
 				trace += variableValues.get(v).get(t) + ", ";
 			}
 			
